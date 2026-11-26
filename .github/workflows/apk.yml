@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  NOMBRE: 'Aaron Vacilon'
+  NOMBRE: 'Aaron Vacilón'
 
 jobs:
   apk:
@@ -32,10 +32,10 @@ jobs:
           cat > app/build.gradle << 'EOF'
           plugins { id 'com.android.application' version '8.7.3' }
           android {
-              namespace 'com.ejemplo.AaronVacilon'
+              namespace 'com.ejemplo.dosfotos'
               compileSdk 34
               defaultConfig {
-                  applicationId 'com.ejemplo.AaronVacilon'
+                  applicationId 'com.ejemplo.dosfotos'
                   minSdk 28
                   targetSdk 34
                   versionCode 1
@@ -224,8 +224,7 @@ jobs:
           mkdir -p app/src/main/res/drawable-nodpi
           IMG=$(ls | grep -i -E '^icono\.(png|jpg|jpeg)$' | head -n 1)
           if [ -z "$IMG" ]; then echo "Falta la imagen icono.jpg o icono.png"; exit 1; fi
-          EXT=$(echo "${IMG##*.}" | tr 'A-Z' 'a-z')
-          cp "$IMG" "app/src/main/res/drawable-nodpi/icono.$EXT"
+          convert "$IMG" -auto-orient -resize '432x432^' -gravity center -extent 432x432 -strip app/src/main/res/drawable-nodpi/icono.png
           python3 - << 'EOF'
           import os, html
           ruta = 'app/src/main/AndroidManifest.xml'
