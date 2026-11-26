@@ -82,7 +82,7 @@ jobs:
           import android.widget.Toast;
 
           public class MainActivity extends Activity {
-              private static final int TOQUES = 20;
+              private static final int TOQUES = 200;
               private final Uri[] uris = new Uri[2];
               private final Bitmap[] fotos = new Bitmap[2];
               private final ImageView[] previas = new ImageView[2];
