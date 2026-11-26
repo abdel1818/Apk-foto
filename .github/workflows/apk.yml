@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  NOMBRE: 'Aaron Vacilón'
+  NOMBRE: 'Aaron Vacilon'
 
 jobs:
   apk:
