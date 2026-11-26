@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  NOMBRE: 'Aaron Vacilón'
+  NOMBRE: 'Aaron Vacilon'
 
 jobs:
   apk:
@@ -32,10 +32,10 @@ jobs:
           cat > app/build.gradle << 'EOF'
           plugins { id 'com.android.application' version '8.7.3' }
           android {
-              namespace 'com.ejemplo.dosfotos'
+              namespace 'com.ejemplo.AaronVacilon'
               compileSdk 34
               defaultConfig {
-                  applicationId 'com.ejemplo.dosfotos'
+                  applicationId 'com.ejemplo.AaronVacilon'
                   minSdk 28
                   targetSdk 34
                   versionCode 1
