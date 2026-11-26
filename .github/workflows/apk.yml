@@ -3,10 +3,14 @@ on:
   push:
   workflow_dispatch:
 
+env:
+  NOMBRE: 'Dos Fotos'
+
 jobs:
   apk:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -42,7 +46,8 @@ jobs:
 
           cat > app/src/main/AndroidManifest.xml << 'EOF'
           <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-              <application android:label="Dos Fotos"
+              <application android:label="NOMBRE_APP"
+                  android:icon="@drawable/icono"
                   android:theme="@android:style/Theme.Material.NoActionBar">
                   <activity android:name=".MainActivity"
                       android:exported="true"
@@ -77,7 +82,7 @@ jobs:
           import android.widget.Toast;
 
           public class MainActivity extends Activity {
-              private static final int TOQUES = 200;
+              private static final int TOQUES = 20;
               private final Uri[] uris = new Uri[2];
               private final Bitmap[] fotos = new Bitmap[2];
               private final ImageView[] previas = new ImageView[2];
@@ -213,6 +218,21 @@ jobs:
                   if (!mostrando) super.onBackPressed();
               }
           }
+          EOF
+      - name: Poner nombre e imagen
+        run: |
+          mkdir -p app/src/main/res/drawable-nodpi
+          IMG=$(ls | grep -i -E '^icono\.(png|jpg|jpeg)$' | head -n 1)
+          if [ -z "$IMG" ]; then echo "Falta la imagen icono.jpg o icono.png"; exit 1; fi
+          EXT=$(echo "${IMG##*.}" | tr 'A-Z' 'a-z')
+          cp "$IMG" "app/src/main/res/drawable-nodpi/icono.$EXT"
+          python3 - << 'EOF'
+          import os, html
+          ruta = 'app/src/main/AndroidManifest.xml'
+          texto = open(ruta, encoding='utf-8').read()
+          nombre = html.escape(os.environ['NOMBRE']).replace("'", "\\'")
+          texto = texto.replace('NOMBRE_APP', nombre)
+          open(ruta, 'w', encoding='utf-8').write(texto)
           EOF
       - name: Compilar
         run: gradle assembleDebug
